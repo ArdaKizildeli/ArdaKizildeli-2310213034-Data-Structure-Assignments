@@ -1,0 +1,63 @@
+#include <stdio.h>
+
+#define MAXSIZE 100
+
+void diziyiYazdir(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+void elemanEkle(int arr[], int *n, int eleman, int indeks) {
+    if (*n >= MAXSIZE) {
+        printf("Hata: Dizi dolu!\n");
+        return;
+    }
+    if (indeks < 0 || indeks > *n) {
+        printf("Hata: Gecersiz indeks!\n");
+        return;
+    }
+
+    for (int i = *n; i > indeks; i--) {
+        arr[i] = arr[i - 1];
+    }
+
+    arr[indeks] = eleman;
+    (*n)++;
+}
+
+void elemanSil(int arr[], int *n, int indeks) {
+    if (*n <= 0) {
+        printf("Hata: Dizi zaten bos!\n");
+        return;
+    }
+    if (indeks < 0 || indeks >= *n) {
+        printf("Hata: Gecersiz indeks!\n");
+        return;
+    }
+
+    for (int i = indeks; i < *n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+
+    (*n)--;
+}
+
+int main() {
+    int dizi[MAXSIZE] = {10, 20, 30, 40, 50};
+    int boyut = 5;
+
+    printf("Baslangic Dizisi: ");
+    diziyiYazdir(dizi, boyut);
+
+    printf("\n2. indekse 99 ekleniyor...\n");
+    elemanEkle(dizi, &boyut, 99, 2);
+    diziyiYazdir(dizi, boyut);
+
+    printf("\n3. indeksteki eleman siliniyor...\n");
+    elemanSil(dizi, &boyut, 3);
+    diziyiYazdir(dizi, boyut);
+
+    return 0;
+}
