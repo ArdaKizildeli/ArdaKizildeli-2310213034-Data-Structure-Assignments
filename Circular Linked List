@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void listele(struct Node* head) {
+    if (head == NULL) {
+        printf("Liste bos.\n");
+        return;
+    }
+    struct Node* temp = head;
+    printf("Liste: ");
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("(Baslangic degeri)\n");
+}
+
+void arayaEkle(struct Node* prev_node, int veri) {
+    if (prev_node == NULL) return;
+
+    struct Node* yeni = (struct Node*)malloc(sizeof(struct Node));
+    yeni->data = veri;
+    
+    yeni->next = prev_node->next;
+    prev_node->next = yeni;
+}
+
+void dugumSil(struct Node** head_ref, int key) {
+    if (*head_ref == NULL) return;
+
+    struct Node *curr = *head_ref, *prev;
+
+    if (curr->data == key) {
+        if (curr->next == *head_ref) {
+            free(curr);
+            *head_ref = NULL;
+            return;
+        }
+        
+        struct Node* last = *head_ref;
+        while (last->next != *head_ref) {
+            last = last->next;
+        }
+        last->next = curr->next;
+        *head_ref = curr->next;
+        free(curr);
+        return;
+    }
+
+    while (curr->next != *head_ref && curr->data != key) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (curr->data == key) {
+        prev->next = curr->next;
+        free(curr);
+    } else {
+        printf("%d degeri listede bulunamadi.\n", key);
+    }
+}
+
+int main() {
+    struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* ikinci = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* ucuncu = (struct Node*)malloc(sizeof(struct Node));
+
+    head->data = 10;
+    head->next = ikinci;
+
+    ikinci->data = 30;
+    ikinci->next = ucuncu;
+
+    ucuncu->data = 40;
+    ucuncu->next = head;
+
+    listele(head);
+
+    printf("\n10'dan sonra 20 ekleniyor...\n");
+    arayaEkle(head, 20);
+    listele(head);
+
+    printf("\n30 degeri siliniyor...\n");
+    dugumSil(&head, 30);
+    listele(head);
+
+    return 0;
+}
