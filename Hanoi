@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void kuleleriGoster(int n, char kaynak, char hedef, char gecici) {
+}
+
+
+void hanoiCoz(int n, char kaynak, char hedef, char gecici) {
+    if (n == 1) {
+        printf("Disk 1 %c direginden %c diregine tasinir\n", kaynak, hedef);
+        return;
+    }
+
+    hanoiCoz(n - 1, kaynak, gecici, hedef);
+
+    printf("Disk %d %c direginden %c diregine tasindi.\n", n, kaynak, hedef);
+
+    hanoiCoz(n - 1, gecici, hedef, kaynak);
+}
+
+int main() {
+    int diskSayisi;
+
+    printf("Disk sayisini giriniz: ");
+    if (scanf("%d", &diskSayisi) != 1 || diskSayisi <= 0) {
+        printf("Lutfen gecerli bir pozitif tam sayi girin!\n");
+        return 1;
+    }
+
+    printf("\nCozum: (Direkler: A, B, C)...\n");
+    printf("------------------------------------------\n");
+
+    hanoiCoz(diskSayisi, 'A', 'C', 'B');
+
+    printf("------------------------------------------\n");
+    printf("Tamamlandi\n");
+
+    return 0;
+}
