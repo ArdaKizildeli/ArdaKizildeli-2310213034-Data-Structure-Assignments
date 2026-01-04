@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+#define MAX 20
+
+void sparseDonustur(int matris[MAX][MAX], int satir, int sutun) {
+    int sparse[MAX][3];
+    int k = 1;
+
+    for (int i = 0; i < satir; i++) {
+        for (int j = 0; j < sutun; j++) {
+            if (matris[i][j] != 0) {
+                sparse[k][0] = i;
+                sparse[k][1] = j;
+                sparse[k][2] = matris[i][j];
+                k++;
+            }
+        }
+    }
+
+    sparse[0][0] = satir;
+    sparse[0][1] = sutun;
+    sparse[0][2] = k - 1;
+
+    printf("\nSparse Matrix:\n");
+    printf("Satir\tSutun\tDeger\n");
+    printf("---------------------------\n");
+    for (int i = 0; i < k; i++) {
+        printf("%d\t%d\t%d\n", sparse[i][0], sparse[i][1], sparse[i][2]);
+    }
+}
+
+int main() {
+    int satir = 4, sutun = 5;
+    
+    int matris[MAX][MAX] = {
+        {0, 0, 3, 0, 4},
+        {0, 0, 5, 7, 0},
+        {0, 0, 0, 0, 0},
+        {0, 2, 6, 0, 0}
+    };
+
+    printf("Orijinal Matris:\n");
+    for (int i = 0; i < satir; i++) {
+        for (int j = 0; j < sutun; j++) {
+            printf("%d ", matris[i][j]);
+        }
+        printf("\n");
+    }
+
+    sparseDonustur(matris, satir, sutun);
+
+    return 0;
+}
