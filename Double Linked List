@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+struct Node* yeniDugum(int veri) {
+    struct Node* dugum = (struct Node*)malloc(sizeof(struct Node));
+    dugum->data = veri;
+    dugum->next = NULL;
+    dugum->prev = NULL;
+    return dugum;
+}
+
+void listele(struct Node* head) {
+    struct Node* temp = head;
+    printf("Liste (Ileri): ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void arayaEkle(struct Node* prev_node, int yeni_veri) {
+    if (prev_node == NULL) {
+        printf("Hata: Onceki dugum NULL olamaz!\n");
+        return;
+    }
+
+    struct Node* yeni = yeniDugum(yeni_veri);
+
+    yeni->next = prev_node->next;
+    prev_node->next = yeni;
+    yeni->prev = prev_node;
+
+    if (yeni->next != NULL) {
+        yeni->next->prev = yeni;
+    }
+}
+
+void dugumSil(struct Node** head_ref, int anahtar) {
+    struct Node* temp = *head_ref;
+
+    while (temp != NULL && temp->data != anahtar) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Silinecek eleman (%d) bulunamadi.\n", anahtar);
+        return;
+    }
+
+    if (*head_ref == temp) {
+        *head_ref = temp->next;
+    }
+
+    if (temp->next != NULL) {
+        temp->next->prev = temp->prev;
+    }
+
+    if (temp->prev != NULL) {
+        temp->prev->next = temp->next;
+    }
+
+    free(temp);
+    printf("Eleman %d silindi.\n", anahtar);
+}
+
+int main() {
+    struct Node* head = yeniDugum(10);
+    head->next = yeniDugum(30);
+    head->next->prev = head;
+
+    printf("Baslangic:\n");
+    listele(head);
+
+    printf("\n10'dan sonra 20 ekleniyor...\n");
+    arayaEkle(head, 20);
+    listele(head);
+
+    printf("\n30 siliniyor...\n");
+    dugumSil(&head, 30);
+    listele(head);
+
+    printf("\n10 siliniyor (Head silme)...\n");
+    dugumSil(&head, 10);
+    listele(head);
+
+    return 0;
+}
