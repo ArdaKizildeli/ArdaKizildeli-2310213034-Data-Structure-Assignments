@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 10
+
+
+void DFS(int graph[MAX][MAX], int n, int v, bool visited[]) {
+    visited[v] = true;
+    printf("%d ", v);
+
+    for (int i = 0; i < n; i++) {
+        if (graph[v][i] == 1 && !visited[i]) {
+            DFS(graph, n, i, visited);
+        }
+    }
+}
+
+void clusterBul(int graph[MAX][MAX], int n) {
+    bool visited[MAX] = {false};
+    int clusterSayisi = 0;
+
+    printf("Graph içindeki kümeler (Clusters):\n");
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            clusterSayisi++;
+            printf("Cluster %d: { ", clusterSayisi);
+            DFS(graph, n, i, visited);
+            printf("}\n");
+        }
+    }
+    printf("\nToplam bulunan küme sayısı: %d\n", clusterSayisi);
+}
+
+int main() {
+    int n = 6; 
+
+    int graph[MAX][MAX] = {
+        {0, 1, 0, 0, 0, 0},
+        {1, 0, 0, 0, 0, 0},
+        {0, 0, 0, 1, 1, 0},
+        {0, 0, 1, 0, 1, 0},
+        {0, 0, 1, 1, 0, 0},
+        {0, 0, 0, 0, 0, 0}
+    };
+
+    clusterBul(graph, n);
+
+    return 0;
+}
