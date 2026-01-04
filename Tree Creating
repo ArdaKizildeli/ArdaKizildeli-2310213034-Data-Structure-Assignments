@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+#define MAXSIZE 10
+
+
+int tree[MAXSIZE];
+int count = 0;
+
+
+void insert(int data) {
+    if (count >= MAXSIZE) {
+        printf("Tree is full!\n");
+        return;
+    }
+    tree[count] = data;
+    count++;
+}
+
+void display() {
+    printf("Tree Array: ");
+    for (int i = 0; i < count; i++) {
+        printf("%d ", tree[i]);
+    }
+    printf("\n");
+}
+
+void printChildren(int index) {
+    int left = (2 * index) + 1;
+    int right = (2 * index) + 2;
+
+    printf("Node %d (Value: %d):\n", index, tree[index]);
+    
+    if (left < count)
+        printf("  Left Child: %d\n", tree[left]);
+    else
+        printf("  Left Child: None\n");
+
+    if (right < count)
+        printf("  Right Child: %d\n", tree[right]);
+    else
+        printf("  Right Child: None\n");
+}
+
+int main() {
+    insert(10);
+    insert(20);
+    insert(30);
+    insert(40);
+    insert(50);
+
+    display();
+
+    printChildren(0);
+    
+    printChildren(1);
+
+    return 0;
+}
