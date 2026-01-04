@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 10
+
+int queue[MAX];
+int front = -1, rear = -1;
+
+void enqueue(int v) {
+    if (rear == MAX - 1) return;
+    if (front == -1) front = 0;
+    queue[++rear] = v;
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) return -1;
+    return queue[front++];
+}
+
+void DFS(int graph[MAX][MAX], int n, int start, bool visited[]) {
+    visited[start] = true;
+    printf("%d ", start);
+
+    for (int i = 0; i < n; i++) {
+        if (graph[start][i] == 1 && !visited[i]) {
+            DFS(graph, n, i, visited);
+        }
+    }
+}
+
+void BFS(int graph[MAX][MAX], int n, int start) {
+    bool visited[MAX] = {false};
+    
+    visited[start] = true;
+    enqueue(start);
+
+    printf("BFS Sonucu: ");
+    while (front <= rear && front != -1) {
+        int current = dequeue();
+        if (current == -1) break;
+        
+        printf("%d ", current);
+
+        for (int i = 0; i < n; i++) {
+            if (graph[current][i] == 1 && !visited[i]) {
+                visited[i] = true;
+                enqueue(i);
+            }
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int n = 6; 
+    int graph[MAX][MAX] = {
+        {0, 1, 1, 0, 0, 0},
+        {1, 0, 0, 1, 1, 0},
+        {1, 0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0, 0},
+        {0, 1, 1, 0, 0, 0}
+    };
+
+    bool visitedDFS[MAX] = {false};
+    printf("DFS Sonucu: ");
+    DFS(graph, n, 0, visitedDFS);
+    printf("\n");
+
+    BFS(graph, n, 0);
+
+    return 0;
+}
